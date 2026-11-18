@@ -1,13 +1,29 @@
-name: recuperar_angola
-description: App para recuperar fotos apagadas em Angola
+name: recuperar_angola_real
+description: Recover Angola - Motor forense REAL com leitura direta do disco.
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.0+5
+
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.2.0 <4.0.0'
+  flutter: ">=3.16.0"
+
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.6
+  permission_handler: 11.3.1
+  device_info_plus: ^9.1.2
+  path_provider: ^2.1.2
+  qr_flutter: 4.1.0
+  share_plus: ^7.2.2
+  battery_plus: ^5.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/
