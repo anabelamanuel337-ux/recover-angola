@@ -1,19 +1,39 @@
 workflows:
-  android-workflow:
-    name: Android APK
-    max_build_duration: 60
-    instance_type: mac_mini_m2
+  android-real:
+    name: Recover Angola - APK REAL
+    max_build_duration: 20
+    instance_type: mac_mini_m1
     environment:
+      groups:
+        - codemagic_credentials
       flutter: stable
-      xcode: latest
-      cocoapods: default
+      java: 17
+      android_signing:
+        - keystore_reference
+    cache:
+      cache_paths:
+        - ~/.pub-cache
     scripts:
-      - name: Set up Flutter
+      - name: Set up local.properties
         script: |
-          flutter create . --platforms=android --project-name recuperar_angola
+          echo "flutter.sdk=$HOME/programs/flutter" > "$CM_BUILD_DIR/android/local.properties"
+      - name: Get Flutter packages
+        script: |
           flutter pub get
-      - name: Build APK
+      - name: Check project structure
         script: |
-          flutter build apk --release --no-tree-shake-icons
+          ls -la
+          ls -la android/app/src/main/kotlin/com/recover/angola/ || echo "ERRO: MainActivity.kt não encontrado!"
+      - name: Build APK REAL com motor nativo
+        script: |
+          flutter build apk --release --obfuscate --split-debug-info=./symbols -v
     artifacts:
       - build/app/outputs/flutter-apk/app-release.apk
+      - build/app/outputs/flutter-apk/app-release.apk.sha1
+    publishing:
+      email:
+        recipients:
+          - user@example.com
+        notify:
+          success: true
+          failure: true
